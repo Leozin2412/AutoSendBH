@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    @page { size: A4 portrait; margin: 10mm; }
+    body { font-family: Arial, sans-serif; font-size: 10px; margin: 0; padding: 0; }
+    h2 { text-align: center; font-size: 14px; margin-bottom: 20px; text-decoration: underline; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+    th, td { border: 1px solid #000; padding: 4px; text-align: left; }
+    .no-border { border: none; }
+    .center { text-align: center; }
+    .bold { font-weight: bold; }
+    .header-table td { border: none; padding: 2px 4px; }
+    
+    .main-table th { background-color: #f0f0f0; text-align: center; }
+    .main-table td { text-align: center; height: 20px; }
+    .signature-cell { width: 120px; height: 25px; padding: 0; vertical-align: middle; }
+    .signature-img { max-height: 20px; max-width: 100px; display: block; margin: 0 auto; }
+    
+    .footer-table th, .footer-table td { padding: 4px; }
+  </style>
+</head>
+<body>
+
+  <h2>FOLHA DE PONTO INDIVIDUAL DE TRABALHO</h2>
+
+  <table class="header-table">
+    <tr>
+      <td class="bold" style="width: 70%">EMPREGADOR:</td>
+      <td class="bold">CEI / CNPJ N°:</td>
+    </tr>
+    <tr>
+      <td>Tradsul Consultoria e Perícias Técnicas</td>
+      <td>02.119.049/0001-93</td>
+    </tr>
+    <tr>
+      <td class="bold" colspan="2">ENDEREÇO:</td>
+    </tr>
+    <tr>
+      <td colspan="2">Rua Lúcio Bittencout, n° 109, sala 707, Vila Santa Cecília, Volta Redonda, RJ, CEP: 27260-110</td>
+    </tr>
+    <tr>
+      <td class="bold">EMPREGADO(A):</td>
+      <td class="bold">CTPS N° E SÉRIE: &nbsp;&nbsp;&nbsp;&nbsp; DATA DE ADMISSÃO:</td>
+    </tr>
+    <tr>
+      <td>Leonardo Moreira Monteiro</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="bold">FUNÇÃO:</td>
+      <td class="bold">HORÁRIO DE TRABALHO DE SEG. A SEXTA FEIRA:</td>
+    </tr>
+    <tr>
+      <td>Assitente de TI</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        <span class="bold">HORÁRIO AOS SÁBADOS:</span> ----- &nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="bold">DESCANSO SEMANAL:</span>
+      </td>
+      <td>
+        <span class="bold">MÊS:</span> <%= monthName %> &nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="bold">ANO:</span> <%= year %>
+      </td>
+    </tr>
+  </table>
+
+  <table class="main-table">
+    <thead>
+      <tr>
+        <th rowspan="2">DIAS<br>MÊS</th>
+        <th rowspan="2">ENTRADA<br>MANHÃ</th>
+        <th colspan="2">ALMOÇO</th>
+        <th rowspan="2">SAÍDA<br>TARDE</th>
+        <th colspan="2">EXTRAS</th>
+        <th rowspan="2">ASSINATURA</th>
+      </tr>
+      <tr>
+        <th>SAÍDA</th>
+        <th>RETORNO</th>
+        <th>ENTRADA</th>
+        <th>SAÍDA</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% days.forEach(function(d) { %>
+        <tr>
+          <td><%= d.day %></td>
+          
+          <% if (d.isWorkingDay) { %>
+            <td><%= d.entrada1 %></td>
+            <td><%= d.saida1 %></td>
+            <td><%= d.entrada2 %></td>
+            <td><%= d.saida2 %></td>
+            <td></td>
+            <td></td>
+            <td class="signature-cell">
+              <img src="<%= signatureImage %>" class="signature-img" alt="Assinatura">
+            </td>
+          <% } else { %>
+            <td colspan="6" style="background-color: #f9f9f9; color: #555;">
+              <%= d.note %>
+            </td>
+            <td></td>
+          <% } %>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <table class="footer-table" style="width: 100%; border: none;">
+    <tr>
+      <td style="width: 50%; border: none; vertical-align: top;">
+        <table style="width: 100%;">
+          <tr><th colspan="3">RESUMO GERAL</th></tr>
+          <tr><td class="center">+</td><td>Dias / Horas Normais</td><td>R$</td></tr>
+          <tr><td class="center">+</td><td>H. Extras / Adicionais (Verso)</td><td>R$</td></tr>
+          <tr><td class="center">(-)</td><td>Faltas no Mês</td><td>R$</td></tr>
+          <tr><td class="center">=</td><td class="bold">Sub-Total / Base de Cálculo</td><td>R$</td></tr>
+          <tr><td class="center">(-)</td><td>% INSS</td><td>R$</td></tr>
+          <tr><td class="center">(-)</td><td>Outros Descontos (Verso)</td><td>R$</td></tr>
+          <tr><td class="center">+</td><td>Salário Família</td><td>R$</td></tr>
+          <tr><td colspan="2" class="bold">Total Líquido a Receber</td><td>R$</td></tr>
+        </table>
+      </td>
+      <td style="width: 50%; border: none; text-align: center; vertical-align: bottom;">
+        <div style="border-bottom: 1px solid #000; width: 80%; margin: 0 auto 5px;"></div>
+        VISTO DA FISCALIZAÇÃO
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

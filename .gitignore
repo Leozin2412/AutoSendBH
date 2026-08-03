@@ -1,0 +1,5 @@
+node_modules/
+.env
+Teste_Folha_De_Ponto.pdf
+*.log
+.DS_Store
