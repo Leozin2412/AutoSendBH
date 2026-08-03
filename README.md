@@ -42,7 +42,7 @@ Crie um arquivo `.env` na raiz do projeto copiando o `.env.example`:
 ```env
 EMAIL_USER=seu_email@gmail.com
 EMAIL_APP_PASSWORD=sua_senha_de_app_do_google
-TARGET_EMAIL=leonardommonteiro2004@gmail.com
+TARGET_EMAIL=teste@email.com
 # Somente para teste local (Windows):
 CHROME_EXECUTABLE_PATH="C:\Program Files\Google\Chrome\Application\chrome.exe"
 ```
