@@ -1,13 +1,15 @@
 const ejs = require('ejs');
 const path = require('path');
 const fs = require('fs');
-const puppeteer = require('puppeteer-core');
+
+// Puppeteer-core será importado dinamicamente dentro da função para evitar erro de ESM no Vercel
 let chromium = require('@sparticuz/chromium');
 if (chromium.default) {
   chromium = chromium.default;
 }
 
 async function generatePDF(timesheetData, year, monthName) {
+  const puppeteer = (await import('puppeteer-core')).default || await import('puppeteer-core');
   // Ler a imagem da assinatura e converter para base64
   const signaturePath = path.join(__dirname, '..', 'Leonardo Monteiro.png');
   const signatureBase64 = fs.readFileSync(signaturePath, 'base64');
