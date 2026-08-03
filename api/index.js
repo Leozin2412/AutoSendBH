@@ -1,6 +1,30 @@
 const fastify = require('fastify')({ logger: true });
 require('dotenv').config();
 
+// Configuração do Swagger para documentação
+fastify.register(require('@fastify/swagger'), {
+  openapi: {
+    info: {
+      title: 'AutoSendBH API',
+      description: 'API para automação de geração e envio de folha de ponto.',
+      version: '1.0.0'
+    },
+    servers: [{
+      url: 'http://localhost:3000'
+    }],
+    components: {}
+  }
+});
+
+fastify.register(require('@fastify/swagger-ui'), {
+  routePrefix: '/docs',
+  uiConfig: {
+    docExpansion: 'full',
+    deepLinking: false
+  }
+});
+
+
 const { generateTimesheetData } = require('../services/timeCalculator');
 const { generatePDF } = require('../services/pdfGenerator');
 const { sendTimesheetEmail } = require('../services/emailSender');
@@ -10,7 +34,30 @@ const MONTH_NAMES = [
   'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
 ];
 
-fastify.get('/api/cron/generate-timesheet', async (request, reply) => {
+fastify.register(async (app) => {
+  app.get('/api/cron/generate-timesheet', {
+  schema: {
+    description: 'Gera a folha de ponto do mês anterior e envia por e-mail (usado pelo Vercel Cron)',
+    tags: ['Cron'],
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          status: { type: 'string' },
+          message: { type: 'string' },
+          messageId: { type: 'string' }
+        }
+      },
+      500: {
+        type: 'object',
+        properties: {
+          status: { type: 'string' },
+          message: { type: 'string' }
+        }
+      }
+    }
+  }
+}, async (request, reply) => {
   try {
     // Como roda dia 01, geramos referente ao mês anterior
     const today = new Date();
@@ -51,6 +98,7 @@ fastify.get('/api/cron/generate-timesheet', async (request, reply) => {
       message: error.message
     });
   }
+});
 });
 
 // Apenas necessário se formos rodar localmente via `node api/index.js`
